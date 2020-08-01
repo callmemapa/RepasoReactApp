@@ -3,6 +3,11 @@ import logo from './assets/images/logo.svg';
 import './assets/css/App.css';
 
 //Componentes
+import Task from './components/Task';
+import Tittle from './components/Tittle';
+import Layout from './components/Layout';
+import TaskList from './components/Task-list';
+import Input from './components/Input';
 
 class App extends Component {
   constructor(props) {
@@ -29,30 +34,28 @@ class App extends Component {
     })
   }
 
+  handleDelete = (id) => {
+    let newTasks = this.state.tasks;
+    newTasks.splice(id,1)
+    this.setState({
+      tasks: newTasks,
+    })
+  }
+
   render() {
     return (
-      <div className="App">
-        <div className="container">
-          <h1 className="tittle">
-            Hello world <span aria-label="emoji" role="img">🔥</span>
-          </h1>
-          <form onSubmit={this.handleSubmit}>
-          <input 
-            value={this.state.newTask}
-            onChange={this.handleTaskChange} 
-            type="text" 
-            className="new-task"/>
-          </form>
-          <h2 className="test-label">{this.state.newTask}</h2>
-          {
-            this.state.tasks.map(task =>
-              <div className="task-container">
-                <h3 className="task">{task}</h3>
-              </div>
-            )
-          }
-        </div>
-      </div>
+      <Layout>
+        <Tittle/>
+        <Input
+          handleSubmit={this.handleSubmit}
+          handleTaskChange={this.handleTaskChange}
+          value={this.state.newTask}
+        />
+        <TaskList
+          tasks={this.state.tasks}
+          handleDelete={this.handleDelete}
+        />
+      </Layout>
     );
   }
 }
